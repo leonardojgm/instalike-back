@@ -1,6 +1,6 @@
 # Instalike
 
-Back end desenvolvido durante a Imersão Alura e Gemini Backend, este foi o grande foco.
+Back end desenvolvido durante a Imersão Alura e Gemini Backend, este foi o grande foco, integrando com o MongoDB e API da Gemini.
 
 O Front end foi fornecido pela própria Alura.
 

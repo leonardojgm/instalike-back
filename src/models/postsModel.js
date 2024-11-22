@@ -1,3 +1,5 @@
+import 'dotenv/config';
+import { ObjectId } from 'mongodb';
 import conectarAoBanco from '../config/dbConfig.js';
 
 // console.log(process.env.STRING_CONEXAO); // Descomente para ver a string de conexão
@@ -26,8 +28,9 @@ export async function buscarPostPorID(id) {
 export async function getTodosPosts() {
     const db = conexao.db("imersao-instabytes"); // Seleciona o banco de dados
     const colecao = db.collection("posts"); // Seleciona a coleção de posts
+    const posts = colecao.find().toArray(); // Retorna todos os documentos da coleção como um array
 
-    return colecao.find().toArray(); // Retorna todos os documentos da coleção como um array
+    return posts;
 }
 
 // Função assíncrona para criar um novo post no banco de dados
@@ -37,4 +40,14 @@ export async function criarPost(post) {
     const postCriado = await colecao.insertOne(post); // Insere o novo post
     
     return postCriado;
+}
+
+// Função assíncrona para atualizar um novo post no banco de dados
+export async function atualizarPost(id, novoPost) {
+    const db = conexao.db("imersao-instabytes"); // Seleciona o banco de dados
+    const colecao = db.collection("posts"); // Seleciona a coleção de posts
+    const objID = ObjectId.createFromHexString(id);
+    const postAtualizado = await colecao.updateOne({ _id: new ObjectId(objID) }, { $set: novoPost }); // Atualiza o post)
+    
+    return postAtualizado;
 }

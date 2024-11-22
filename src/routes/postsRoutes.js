@@ -1,7 +1,14 @@
 import express from 'express';
-import { listarPosts, obterMensagemTeste, obterPorIndice, obterPorId, postarNovoPost, uploadImagem } from '../controllers/postsController.js';
+import { listarPosts, obterMensagemTeste, obterPorIndice, obterPorId, postarNovoPost, uploadImagem, atualizarNovoPost } from '../controllers/postsController.js';
 import multer from 'multer';
+import cors from 'cors';
 
+const corsOptions = {
+    origin: '*',
+    optionSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
@@ -16,6 +23,9 @@ const upload = multer({ dest: './uploads', storage });
 const routes = (app) => {
     // Middleware para permitir que o Express entenda dados no formato JSON
     app.use(express.json());
+    
+    //Habilita as configuração de segurança cors
+    app.use(cors(corsOptions));
 
     // Rota raiz, retorna uma mensagem de exemplo
     app.get('/api', obterMensagemTeste);
@@ -34,6 +44,9 @@ const routes = (app) => {
 
     // Rota para enviar uma imagem
     app.post("/upload", upload.single('imagem'), uploadImagem);
+
+    // Rota para atualizar um post
+    app.put("/upload/:id", atualizarNovoPost);
 }
 
 export default routes;
